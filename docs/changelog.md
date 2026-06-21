@@ -1,21 +1,26 @@
 # Changelog
 
-All notable changes to this project will be documented here.
+All notable changes to Hybrid OS will be documented in this file.
 
 ---
 
-## Sprint 1
+## Sprint 1.1
 
 ### Added
 
-- Initial repository
+- Git repository
+- GitHub repository
 - React + Vite
 - TypeScript
-- Folder structure
-- Documentation
-- Git configuration
-
----
-
-Future sprints will continue updating this file.
+- Initial folder structure
+- Project documentation
+- Product roadmap
+- Product vision
+- Architecture documents
+- Database draft
+- API draft
+- README
+- LICENSE
+- CONTRIBUTING
+- CODE_OF_CONDUCT
 
