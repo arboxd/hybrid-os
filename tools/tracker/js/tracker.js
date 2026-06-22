@@ -26,6 +26,8 @@ const Tracker = {
         today: "Push + CrossFit",
 		
 		completedExercises: {},
+		
+		exerciseData:{},
 
     },
 	
@@ -135,18 +137,26 @@ const Tracker = {
 
 },
 
-    init(){
+   init(){
 
     console.log(
+
         "HYBRID TRACKER",
+
         this.version
+
     );
 
     this.loadProfile();
 
+    this.loadTrainingProgress();
+	
+	this.loadExerciseData();
+
     this.renderDashboard();
 
     this.initNavigation();
+	
 
 },
 
@@ -397,9 +407,29 @@ Peso
 </label>
 
 <input
+
+id="weight-${key}"
+
 type="number"
-value="${exercise.weight}"
-step="2.5">
+
+value="${
+
+this.state.exerciseData[key]?.weight ??
+
+exercise.weight
+
+}"
+
+step="2.5"
+
+onchange="Tracker.saveExerciseData(
+
+'${this.state.selectedDay}',
+
+${index}
+
+)"
+>
 
 <label>
 
@@ -408,9 +438,29 @@ RPE
 </label>
 
 <input
+
+id="rpe-${key}"
+
 type="number"
+
 min="1"
-max="10">
+
+max="10"
+
+value="${
+
+this.state.exerciseData[key]?.rpe ?? ""
+
+}"
+
+onchange="Tracker.saveExerciseData(
+
+'${this.state.selectedDay}',
+
+${index}
+
+)"
+>
 
 <label>
 
@@ -418,7 +468,25 @@ Notas
 
 </label>
 
-<textarea rows="2"></textarea>
+<textarea
+
+id="notes-${key}"
+
+rows="2"
+
+onchange="Tracker.saveExerciseData(
+
+'${this.state.selectedDay}',
+
+${index}
+
+)"
+
+>${
+
+this.state.exerciseData[key]?.notes ?? ""
+
+}</textarea>
 
 <br><br>
 
@@ -465,10 +533,45 @@ toggleExercise(day,index){
     this.state.completedExercises[key] =
         !this.state.completedExercises[key];
 
+    this.saveTrainingProgress();
+
     this.renderTraining();
 
 },
 
+saveExerciseData(day,index){
+
+    const key = day + "-" + index;
+
+    this.state.exerciseData[key]={
+
+        weight:document.getElementById(
+            "weight-"+key
+        ).value,
+
+        rpe:document.getElementById(
+            "rpe-"+key
+        ).value,
+
+        notes:document.getElementById(
+            "notes-"+key
+        ).value
+
+    };
+
+    localStorage.setItem(
+
+        "tracker-exercises",
+
+        JSON.stringify(
+
+            this.state.exerciseData
+
+        )
+
+    );
+
+},
 
 renderProfile(){
 
@@ -625,6 +728,23 @@ saveProfile(){
 },
 
 
+saveTrainingProgress(){
+
+    localStorage.setItem(
+
+        "tracker-training",
+
+        JSON.stringify(
+
+            this.state.completedExercises
+
+        )
+
+    );
+
+},
+
+
 loadProfile(){
 
     const profile =
@@ -643,6 +763,46 @@ loadProfile(){
 },
 
 
+loadTrainingProgress(){
+
+    const progress =
+
+        localStorage.getItem(
+
+            "tracker-training"
+
+        );
+
+    if(progress){
+
+        this.state.completedExercises =
+
+            JSON.parse(progress);
+
+    }
+
+},
+
+
+loadExerciseData(){
+
+    const saved=
+
+        localStorage.getItem(
+
+            "tracker-exercises"
+
+        );
+
+    if(saved){
+
+        this.state.exerciseData=
+
+            JSON.parse(saved);
+
+    }
+
+},
 
 
     setText(id,value){
