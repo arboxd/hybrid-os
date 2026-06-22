@@ -1,96 +1,115 @@
 /*
-===========================================
-HYBRID TRACKER
-Version 0.2.0
-Build 0004
-===========================================
+==================================================
+ HYBRID TRACKER
+ Version : 0.3.0
+ Build   : 0005
+==================================================
 */
 
-const Tracker = {
+class HybridTracker {
 
-    version: "0.2.0",
+    constructor() {
 
-    state: {
+        this.profile = {
 
-        week: 1,
+            name: "Obed",
 
-        recovery: 85,
+            age: 38,
 
-        weight: 82.1,
+            height: 171,
 
-        today: "Push + CrossFit"
+            weight: 82.1,
 
-    },
+            targetWeight: 77,
 
-    init(){
+            goal: "HYROX + Spartan"
 
-        console.log(
-            "HYBRID TRACKER",
-            this.version
-        );
+        };
 
-        this.renderDashboard();
+        this.state = {
 
-        this.initNavigation();
+            currentTab: "dashboard",
 
-    },
+            currentWeek: 1,
 
-    renderDashboard(){
+            recovery: 85
 
-        this.setText(
-            "week",
-            this.state.week
-        );
+        };
 
-        this.setText(
-            "recovery",
-            this.state.recovery + "%"
-        );
+        this.workouts = this.loadDefaultWorkouts();
 
-    },
+    }
 
-    setText(id,value){
+    init() {
 
-        const element =
-        document.getElementById(id);
+        this.bindNavigation();
 
-        if(element){
+        this.render();
 
-            element.textContent=value;
+    }
+
+    render() {
+
+        switch (this.state.currentTab) {
+
+            case "dashboard":
+
+                this.renderDashboard();
+
+                break;
+
+            case "training":
+
+                this.renderTraining();
+
+                break;
+
+            case "running":
+
+                this.renderRunning();
+
+                break;
+
+            case "swimming":
+
+                this.renderSwimming();
+
+                break;
+
+            case "recovery":
+
+                this.renderRecovery();
+
+                break;
+
+            case "history":
+
+                this.renderHistory();
+
+                break;
 
         }
 
-    },
+    }
 
-    initNavigation(){
+    bindNavigation() {
 
-        const buttons =
-        document.querySelectorAll(".nav-btn");
+        const buttons = document.querySelectorAll(".nav-btn");
 
-        const pages =
-        document.querySelectorAll(".page");
+        buttons.forEach(button => {
 
-        buttons.forEach(button=>{
+            button.addEventListener("click", () => {
 
-            button.addEventListener("click",()=>{
-
-                buttons.forEach(btn=>
+                buttons.forEach(btn =>
                     btn.classList.remove("active")
                 );
 
                 button.classList.add("active");
 
-                pages.forEach(page=>
-                    page.classList.remove("active-page")
-                );
+                this.state.currentTab =
+                    button.dataset.page;
 
-                const id =
-                button.dataset.page;
-
-                document
-                    .getElementById(id)
-                    .classList
-                    .add("active-page");
+                this.render();
 
             });
 
@@ -98,12 +117,218 @@ const Tracker = {
 
     }
 
-};
+    page() {
+
+        return document.getElementById("page-container");
+
+    }
+
+    renderDashboard() {
+
+        document.getElementById("week").textContent =
+            this.state.currentWeek;
+
+        document.getElementById("recovery").textContent =
+            this.state.recovery + "%";
+
+        this.page().innerHTML = `
+        
+        <div class="card">
+
+            <h2>
+                Bienvenido ${this.profile.name}
+            </h2>
+
+            <p>
+                Objetivo actual:
+                <strong>${this.profile.goal}</strong>
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h3>Peso</h3>
+
+            <h1>${this.profile.weight} kg</h1>
+
+            <p>
+                Meta:
+                ${this.profile.targetWeight} kg
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h3>Entrenamiento de Hoy</h3>
+
+            <h2>Push + CrossFit</h2>
+
+            <p>
+
+                Duración estimada
+
+                90 min
+
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h3>
+
+                Próxima Competencia
+
+            </h3>
+
+            <h2>
+
+                HYROX
+
+            </h2>
+
+            <p>
+
+                Preparación Semana
+                ${this.state.currentWeek}
+
+            </p>
+
+        </div>
+
+        `;
+
+    }
+
+    renderTraining() {
+
+        this.page().innerHTML = `
+
+        <div class="card">
+
+            <h2>
+
+                Workout Player
+
+            </h2>
+
+            <p>
+
+                Disponible en la siguiente entrega.
+
+            </p>
+
+        </div>
+
+        `;
+
+    }
+
+    renderRunning() {
+
+        this.page().innerHTML = `
+
+        <div class="card">
+
+            <h2>
+
+                Running
+
+            </h2>
+
+        </div>
+
+        `;
+
+    }
+
+    renderSwimming() {
+
+        this.page().innerHTML = `
+
+        <div class="card">
+
+            <h2>
+
+                Swimming
+
+            </h2>
+
+        </div>
+
+        `;
+
+    }
+
+    renderRecovery() {
+
+        this.page().innerHTML = `
+
+        <div class="card">
+
+            <h2>
+
+                Recovery
+
+            </h2>
+
+        </div>
+
+        `;
+
+    }
+
+    renderHistory() {
+
+        this.page().innerHTML = `
+
+        <div class="card">
+
+            <h2>
+
+                Historial
+
+            </h2>
+
+        </div>
+
+        `;
+
+    }
+
+    loadDefaultWorkouts() {
+
+        return {
+
+            week1: {
+
+                monday: {
+
+                    name: "Push + CrossFit"
+
+                }
+
+            }
+
+        };
+
+    }
+
+}
 
 document.addEventListener(
 
     "DOMContentLoaded",
 
-    ()=>Tracker.init()
+    () => {
+
+        const tracker =
+            new HybridTracker();
+
+        tracker.init();
+
+    }
 
 );
