@@ -110,16 +110,18 @@ sunday: null,
 
     init(){
 
-        console.log(
-            "HYBRID TRACKER",
-            this.version
-        );
+    console.log(
+        "HYBRID TRACKER",
+        this.version
+    );
 
-        this.renderDashboard();
+    this.loadProfile();
 
-        this.initNavigation();
+    this.renderDashboard();
 
-    },
+    this.initNavigation();
+
+},
 
     renderDashboard(){
 
@@ -405,41 +407,67 @@ Cancelar
 
 saveProfile(){
 
-this.profile.name =
-document.getElementById("profile-name").value;
+    this.profile.name =
+        document.getElementById("profile-name").value;
 
-this.profile.age =
-parseInt(
-document.getElementById("profile-age").value
-);
+    this.profile.age =
+        parseInt(
+            document.getElementById("profile-age").value
+        );
 
-this.profile.height =
-parseInt(
-document.getElementById("profile-height").value
-);
+    this.profile.height =
+        parseInt(
+            document.getElementById("profile-height").value
+        );
 
-this.profile.weight =
-parseFloat(
-document.getElementById("profile-weight").value
-);
+    this.profile.weight =
+        parseFloat(
+            document.getElementById("profile-weight").value
+        );
 
-this.profile.targetWeight =
-parseFloat(
-document.getElementById("profile-target").value
-);
+    this.profile.targetWeight =
+        parseFloat(
+            document.getElementById("profile-target").value
+        );
 
-this.profile.goal =
-document.getElementById("profile-goal").value;
+    this.profile.goal =
+        document.getElementById("profile-goal").value;
 
-this.profile.gym =
-document.getElementById("profile-gym").value;
+    this.profile.gym =
+        document.getElementById("profile-gym").value;
 
-this.state.weight =
-this.profile.weight;
+    this.state.weight =
+        this.profile.weight;
 
-this.renderDashboard();
+    localStorage.setItem(
+        "tracker-profile",
+        JSON.stringify(this.profile)
+    );
+
+    this.renderDashboard();
 
 },
+
+
+loadProfile(){
+
+    const profile =
+        localStorage.getItem("tracker-profile");
+
+    if(profile){
+
+        this.profile =
+            JSON.parse(profile);
+
+        this.state.weight =
+            this.profile.weight;
+
+    }
+
+},
+
+
+
 
     setText(id,value){
 
