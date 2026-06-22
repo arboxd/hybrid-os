@@ -23,7 +23,9 @@ const Tracker = {
 
         weight: 82.1,
 
-        today: "Push + CrossFit"
+        today: "Push + CrossFit",
+		
+		completedExercises: {},
 
     },
 	
@@ -253,6 +255,22 @@ const Tracker = {
         ][
             this.state.selectedDay
         ];
+		
+		const completedCount =
+    workout.exercises.filter((exercise,index)=>{
+
+        const key =
+            this.state.selectedDay + "-" + index;
+
+        return this.state.completedExercises[key];
+
+    }).length;
+
+const progress =
+    Math.round(
+        completedCount /
+        workout.exercises.length * 100
+    );
 
     const days = [
 
@@ -308,64 +326,118 @@ const Tracker = {
 
     html += `
 
-        </div>
+        <div class="card">
 
-    </div>
+    <h2>
 
-    <div class="card">
+        ${workout.name}
 
-        <h2>
+    </h2>
 
-            ${workout.name}
+    <p>
 
-        </h2>
+        Duración:
+        ${workout.duration} min
 
-        <p>
+    </p>
 
-            Duración:
-            ${workout.duration} min
+    <p>
 
-        </p>
+        Progreso:
+        ${completedCount}
+        /
+        ${workout.exercises.length}
 
-    </div>
+        (${progress}%)
+
+    </p>
+
+    <progress
+
+        value="${progress}"
+
+        max="100"
+
+        style="width:100%;height:18px;">
+
+    </progress>
+
+</div>
 
     `;
 
-    workout.exercises.forEach(exercise=>{
+    workout.exercises.forEach((exercise,index)=>{
+
+    const key =
+        this.state.selectedDay + "-" + index;
+
+    const completed =
+        this.state.completedExercises[key] || false;
 
         html += `
 
-        <div class="card">
+<div class="card">
 
-            <h3>${exercise.name}</h3>
+<h3>
 
-            <p>
+${completed ? "✅" : "⬜"} ${exercise.name}
 
-                ${exercise.sets} x ${exercise.reps}
+</h3>
 
-            </p>
+<p>
 
-            <label>Peso</label>
+${exercise.sets} x ${exercise.reps}
 
-            <input
-                type="number"
-                value="${exercise.weight}"
-                step="2.5">
+</p>
 
-            <label>RPE</label>
+<label>
 
-            <input
-                type="number"
-                min="1"
-                max="10">
+Peso
 
-            <label>Notas</label>
+</label>
 
-            <textarea rows="2"></textarea>
+<input
+type="number"
+value="${exercise.weight}"
+step="2.5">
 
-        </div>
+<label>
 
-        `;
+RPE
+
+</label>
+
+<input
+type="number"
+min="1"
+max="10">
+
+<label>
+
+Notas
+
+</label>
+
+<textarea rows="2"></textarea>
+
+<br><br>
+
+<button
+
+onclick="Tracker.toggleExercise(
+'${this.state.selectedDay}',
+${index}
+)"
+
+>
+
+${completed ? "Desmarcar" : "Completar"}
+
+</button>
+
+</div>
+
+`;
 
     });
 
@@ -380,6 +452,18 @@ const Tracker = {
 changeDay(day){
 
     this.state.selectedDay = day;
+
+    this.renderTraining();
+
+},
+
+
+toggleExercise(day,index){
+
+    const key = day + "-" + index;
+
+    this.state.completedExercises[key] =
+        !this.state.completedExercises[key];
 
     this.renderTraining();
 
