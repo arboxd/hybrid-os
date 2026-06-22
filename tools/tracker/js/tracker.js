@@ -11,8 +11,13 @@ const Tracker = {
     version: "0.2.0",
 
     state: {
+		
 
         week: 1,
+		
+		selectedWeek: 1,
+
+		selectedDay: "monday",
 
         recovery: 85,
 
@@ -21,6 +26,25 @@ const Tracker = {
         today: "Push + CrossFit"
 
     },
+	
+			profile: {
+
+    name: "Obed",
+
+    age: 38,
+
+    height: 171,
+
+    weight: 82.1,
+
+    targetWeight: 77,
+
+    goal: "HYROX + Spartan",
+
+    gym: "Smart Fit Tepozan"
+
+},
+
 	
 	workouts: {
 
@@ -31,6 +55,18 @@ const Tracker = {
             name: "Push + CrossFit",
 
             duration: 90,
+			
+			tuesday: null,
+
+wednesday: null,
+
+thursday: null,
+
+friday: null,
+
+saturday: null,
+
+sunday: null,
 
             exercises: [
 
@@ -65,6 +101,8 @@ const Tracker = {
             ]
 
         }
+		
+
 
     }
 
@@ -166,6 +204,12 @@ const Tracker = {
         HYROX + Spartan
 
     </p>
+	
+	<button onclick="Tracker.renderProfile()">
+
+    Editar perfil
+
+</button>
 
 </div>
 
@@ -176,7 +220,11 @@ const Tracker = {
 	renderTraining(){
 
     const workout =
-        this.workouts.week1.monday;
+    this.workouts[
+        "week" + this.state.selectedWeek
+    ][
+        this.state.selectedDay
+    ];
 
     let html = `
 
@@ -240,6 +288,156 @@ const Tracker = {
     document
         .getElementById("page-container")
         .innerHTML = html;
+
+},
+
+
+renderProfile(){
+
+document.getElementById("page-container").innerHTML=`
+
+<div class="card">
+
+<h2>
+
+Perfil
+
+</h2>
+
+<label>
+
+Nombre
+
+</label>
+
+<input
+id="profile-name"
+value="${this.profile.name}">
+
+<label>
+
+Edad
+
+</label>
+
+<input
+id="profile-age"
+type="number"
+value="${this.profile.age}">
+
+<label>
+
+Estatura (cm)
+
+</label>
+
+<input
+id="profile-height"
+type="number"
+value="${this.profile.height}">
+
+<label>
+
+Peso (kg)
+
+</label>
+
+<input
+id="profile-weight"
+type="number"
+step="0.1"
+value="${this.profile.weight}">
+
+<label>
+
+Peso objetivo
+
+</label>
+
+<input
+id="profile-target"
+type="number"
+step="0.1"
+value="${this.profile.targetWeight}">
+
+<label>
+
+Objetivo
+
+</label>
+
+<input
+id="profile-goal"
+value="${this.profile.goal}">
+
+<label>
+
+Gimnasio
+
+</label>
+
+<input
+id="profile-gym"
+value="${this.profile.gym}">
+
+<br><br>
+
+<button
+onclick="Tracker.saveProfile()">
+
+Guardar
+
+</button>
+
+<button
+onclick="Tracker.renderDashboard()">
+
+Cancelar
+
+</button>
+
+</div>
+
+`;
+
+},
+
+
+saveProfile(){
+
+this.profile.name =
+document.getElementById("profile-name").value;
+
+this.profile.age =
+parseInt(
+document.getElementById("profile-age").value
+);
+
+this.profile.height =
+parseInt(
+document.getElementById("profile-height").value
+);
+
+this.profile.weight =
+parseFloat(
+document.getElementById("profile-weight").value
+);
+
+this.profile.targetWeight =
+parseFloat(
+document.getElementById("profile-target").value
+);
+
+this.profile.goal =
+document.getElementById("profile-goal").value;
+
+this.profile.gym =
+document.getElementById("profile-gym").value;
+
+this.state.weight =
+this.profile.weight;
+
+this.renderDashboard();
 
 },
 
