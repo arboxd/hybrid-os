@@ -55,18 +55,6 @@ const Tracker = {
             name: "Push + CrossFit",
 
             duration: 90,
-			
-			tuesday: null,
-
-wednesday: null,
-
-thursday: null,
-
-friday: null,
-
-saturday: null,
-
-sunday: null,
 
             exercises: [
 
@@ -96,6 +84,246 @@ sunday: null,
                     sets: 3,
                     reps: "15",
                     weight: 10
+                }
+
+            ]
+
+        },
+		
+		tuesday: {
+
+            name: "Push + CrossFit",
+
+            duration: 90,
+
+            exercises: [
+
+                {
+                    name: "Press banca",
+                    sets: 4,
+                    reps: "6-8",
+                    weight: 60
+                },
+
+                {
+                    name: "Press inclinado mancuerna",
+                    sets: 3,
+                    reps: "8-10",
+                    weight: 22.5
+                },
+
+                {
+                    name: "Press militar",
+                    sets: 3,
+                    reps: "8-10",
+                    weight: 20
+                },
+
+                {
+                    name: "Elevaciones laterales",
+                    sets: 3,
+                    reps: "15",
+                    weight: 10
+                }
+
+            ]
+
+        },
+		
+		wednesday: {
+
+            name: "Push + CrossFit",
+
+            duration: 90,
+
+            exercises: [
+
+                {
+                    name: "Press banca",
+                    sets: 4,
+                    reps: "6-8",
+                    weight: 60
+                },
+
+                {
+                    name: "Press inclinado mancuerna",
+                    sets: 3,
+                    reps: "8-10",
+                    weight: 22.5
+                },
+
+                {
+                    name: "Press militar",
+                    sets: 3,
+                    reps: "8-10",
+                    weight: 20
+                },
+
+                {
+                    name: "Elevaciones laterales",
+                    sets: 3,
+                    reps: "15",
+                    weight: 10
+                }
+
+            ]
+
+        },
+		
+		thursday: {
+
+            name: "Push + CrossFit",
+
+            duration: 90,
+
+            exercises: [
+
+                {
+                    name: "Press banca",
+                    sets: 4,
+                    reps: "6-8",
+                    weight: 60
+                },
+
+                {
+                    name: "Press inclinado mancuerna",
+                    sets: 3,
+                    reps: "8-10",
+                    weight: 22.5
+                },
+
+                {
+                    name: "Press militar",
+                    sets: 3,
+                    reps: "8-10",
+                    weight: 20
+                },
+
+                {
+                    name: "Elevaciones laterales",
+                    sets: 3,
+                    reps: "15",
+                    weight: 10
+                }
+
+            ]
+
+        },
+		
+		friday: {
+
+            name: "Push + CrossFit",
+
+            duration: 90,
+
+            exercises: [
+
+                {
+                    name: "Press banca",
+                    sets: 4,
+                    reps: "6-8",
+                    weight: 60
+                },
+
+                {
+                    name: "Press inclinado mancuerna",
+                    sets: 3,
+                    reps: "8-10",
+                    weight: 22.5
+                },
+
+                {
+                    name: "Press militar",
+                    sets: 3,
+                    reps: "8-10",
+                    weight: 20
+                },
+
+                {
+                    name: "Elevaciones laterales",
+                    sets: 3,
+                    reps: "15",
+                    weight: 10
+                }
+
+            ]
+
+        },
+		
+		saturday: {
+
+            name: "Push + CrossFit",
+
+            duration: 90,
+
+            exercises: [
+
+                {
+                    name: "Press banca",
+                    sets: 4,
+                    reps: "6-8",
+                    weight: 60
+                },
+
+                {
+                    name: "Press inclinado mancuerna",
+                    sets: 3,
+                    reps: "8-10",
+                    weight: 22.5
+                },
+
+                {
+                    name: "Press militar",
+                    sets: 3,
+                    reps: "8-10",
+                    weight: 20
+                },
+
+                {
+                    name: "Elevaciones laterales",
+                    sets: 3,
+                    reps: "15",
+                    weight: 10
+                }
+
+            ]
+
+        },
+		
+		sunday: {
+
+            name: "Push + CrossFit",
+
+            duration: 90,
+
+            exercises: [
+
+                {
+                    name: "Press banca",
+                    sets: 4,
+                    reps: "6-8",
+                    weight: 60
+                },
+
+                {
+                    name: "Press inclinado mancuerna",
+                    sets: 3,
+                    reps: "8-10",
+                    weight: 22.5
+                },
+
+                {
+                    name: "Press militar",
+                    sets: 3,
+                    reps: "8-10",
+                    weight: 20
+                },
+
+                {
+                    name: "Elevaciones laterales",
+                    sets: 3,
+                    reps: "15",
+                    weight: 11
                 }
 
             ]
@@ -219,20 +447,81 @@ sunday: null,
 
     },
 	
+	
 	renderTraining(){
 
     const workout =
-    this.workouts[
-        "week" + this.state.selectedWeek
-    ][
-        this.state.selectedDay
+        this.workouts[
+            "week" + this.state.selectedWeek
+        ][
+            this.state.selectedDay
+        ];
+
+    const days = [
+
+        ["monday","Lun"],
+
+        ["tuesday","Mar"],
+
+        ["wednesday","Mié"],
+
+        ["thursday","Jue"],
+
+        ["friday","Vie"],
+
+        ["saturday","Sáb"],
+
+        ["sunday","Dom"]
+
     ];
 
     let html = `
 
     <div class="card">
 
-        <h2>${workout.name}</h2>
+        <h2>
+
+            Semana ${this.state.selectedWeek}
+
+        </h2>
+
+        <div class="day-selector">
+
+    `;
+
+    days.forEach(day=>{
+
+        html += `
+
+        <button
+
+            onclick="Tracker.changeDay('${day[0]}')"
+
+            ${this.state.selectedDay===day[0] ? "disabled":""}
+
+        >
+
+            ${day[1]}
+
+        </button>
+
+        `;
+
+    });
+
+    html += `
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>
+
+            ${workout.name}
+
+        </h2>
 
         <p>
 
@@ -251,11 +540,7 @@ sunday: null,
 
         <div class="card">
 
-            <h3>
-
-                ${exercise.name}
-
-            </h3>
+            <h3>${exercise.name}</h3>
 
             <p>
 
@@ -290,6 +575,16 @@ sunday: null,
     document
         .getElementById("page-container")
         .innerHTML = html;
+
+},
+
+
+
+changeDay(day){
+
+    this.state.selectedDay = day;
+
+    this.renderTraining();
 
 },
 
