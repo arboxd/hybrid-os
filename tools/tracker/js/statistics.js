@@ -1,12 +1,8 @@
 /**
  * statistics.js
  * Módulo para manejar estadísticas: gráficos, tendencias y métricas avanzadas.
- * Optimizado y extraído de tracker.js
  */
 
-// ============================
-// Estado local del módulo
-// ============================
 let statsData = {
   totalWorkouts: 0,
   completedWorkouts: 0,
@@ -20,49 +16,30 @@ let statsData = {
   completionRate: 0
 };
 
-// ============================
-// Funciones extraídas
-// ============================
-
-/**
- * renderStatistics()
- * Renderiza las estadísticas con gráficos y métricas.
- * Optimizada: usa canvas para gráficos y evita repeticiones de cálculos.
- */
 export function renderStatistics() {
   const container = document.getElementById('statistics-container');
   if (!container) return;
 
-  // Limpiar contenedor
   container.innerHTML = '';
 
-  // Título
-  const title = document.createElement('h1');
+  const title = document.createElement('h2');
   title.textContent = 'Estadísticas y Análisis';
   title.className = 'statistics-title';
   container.appendChild(title);
 
-  // Métricas principales
   const metricsGrid = createMetricsGrid();
   container.appendChild(metricsGrid);
 
-  // Gráfico de progreso semanal
   const weeklyChart = createWeeklyChart();
   container.appendChild(weeklyChart);
 
-  // Gráfico de progreso mensual
   const monthlyChart = createMonthlyChart();
   container.appendChild(monthlyChart);
 
-  // Tendencias
   const trendsSection = createTrendsSection();
   container.appendChild(trendsSection);
 }
 
-/**
- * createMetricsGrid()
- * Crea grid de métricas principales.
- */
 function createMetricsGrid() {
   const grid = document.createElement('div');
   grid.className = 'metrics-grid';
@@ -103,10 +80,6 @@ function createMetricsGrid() {
   return grid;
 }
 
-/**
- * createWeeklyChart()
- * Crea gráfico de progreso semanal.
- */
 function createWeeklyChart() {
   const section = document.createElement('div');
   section.className = 'chart-section';
@@ -124,16 +97,11 @@ function createWeeklyChart() {
   section.appendChild(title);
   section.appendChild(canvas);
 
-  // Renderizar gráfico
   renderChart(canvas, statsData.weeklyProgress, 'Completados por semana');
 
   return section;
 }
 
-/**
- * createMonthlyChart()
- * Crea gráfico de progreso mensual.
- */
 function createMonthlyChart() {
   const section = document.createElement('div');
   section.className = 'chart-section';
@@ -151,62 +119,46 @@ function createMonthlyChart() {
   section.appendChild(title);
   section.appendChild(canvas);
 
-  // Renderizar gráfico
   renderChart(canvas, statsData.monthlyProgress, 'Completados por mes');
 
   return section;
 }
 
-/**
- * renderChart(canvas, data, label)
- * Renderiza gráfico en canvas.
- * Optimizada: usa números simples y evita librerías externas.
- */
 function renderChart(canvas, data, label) {
-  const ctx = canvas.getContext('2d');
+  if (!data || data.length === 0) return;
 
-  // Limpiar canvas
+  const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Configuración
   const padding = 40;
   const chartWidth = canvas.width - padding * 2;
   const chartHeight = canvas.height - padding * 2;
   const barWidth = chartWidth / data.length - 10;
-
-  // Máximo valor
   const maxValue = Math.max(...data, 1);
 
-  // Título
   ctx.fillStyle = '#333';
   ctx.font = '14px Arial';
   ctx.textAlign = 'center';
   ctx.fillText(label, canvas.width / 2, 20);
 
-  // Renderizar barras
   for (let i = 0; i < data.length; i++) {
     const barHeight = (data[i] / maxValue) * chartHeight;
     const x = padding + i * (barWidth + 10);
     const y = padding + chartHeight - barHeight;
 
-    // Barra
     ctx.fillStyle = '#4CAF50';
     ctx.fillRect(x, y, barWidth, barHeight);
 
-    // Etiqueta
     ctx.fillStyle = '#666';
     ctx.font = '12px Arial';
     ctx.textAlign = 'center';
     ctx.fillText(i + 1, x + barWidth / 2, padding + chartHeight + 20);
 
-    // Valor
     ctx.fillStyle = '#333';
     ctx.font = '10px Arial';
-    ctx.textAlign = 'center';
     ctx.fillText(data[i], x + barWidth / 2, y - 5);
   }
 
-  // Línea base
   ctx.strokeStyle = '#ccc';
   ctx.beginPath();
   ctx.moveTo(padding, padding + chartHeight);
@@ -214,10 +166,6 @@ function renderChart(canvas, data, label) {
   ctx.stroke();
 }
 
-/**
- * createTrendsSection()
- * Crea sección de tendencias.
- */
 function createTrendsSection() {
   const section = document.createElement('div');
   section.className = 'trends-section';
@@ -231,15 +179,15 @@ function createTrendsSection() {
 
   const trends = [
     {
-      text: statsData.completionRate >= 80 
+      text: statsData.completionRate >= 80
         ? '¡Excelente! Tasa de completado muy alta'
         : statsData.completionRate >= 60
-          ? 'Buen progreso, mantén el Progreso'
+          ? 'Buen progreso, mantén el ritmo'
           : 'Necesitas mejorar tu tasa de completado',
       icon: statsData.completionRate >= 80 ? '🌟' : statsData.completionRate >= 60 ? '👍' : '💪'
     },
     {
-      text: statsData.streakDays >= 7 
+      text: statsData.streakDays >= 7
         ? `¡Increíble! Racha de \${statsData.streakDays} días`
         : statsData.streakDays >= 3
           ? `Racha de \${statsData.streakDays} días, sigue así`
@@ -247,7 +195,7 @@ function createTrendsSection() {
       icon: statsData.streakDays >= 7 ? '🔥' : statsData.streakDays >= 3 ? '⭐' : '🎯'
     },
     {
-      text: statsData.averageDuration >= 60 
+      text: statsData.averageDuration >= 60
         ? `Entrenamientos intensos: \${statsData.averageDuration} min avg`
         : statsData.averageDuration >= 30
           ? `Entrenamientos moderados: \${statsData.averageDuration} min avg`
@@ -268,4 +216,69 @@ function createTrendsSection() {
     text.className = 'trend-text';
     text.textContent = trend.text;
 
-    item
+    item.appendChild(icon);
+    item.appendChild(text);
+    trendsList.appendChild(item);
+  });
+
+  section.appendChild(title);
+  section.appendChild(trendsList);
+
+  return section;
+}
+
+export function updateStatsData() {
+  const storageKey = 'hybrid_os_workouts_data';
+  const stored = localStorage.getItem(storageKey);
+
+  if (!stored) return;
+
+  try {
+    const workouts = JSON.parse(stored);
+
+    let totalExercises = 0;
+    let completedExercises = 0;
+    let totalDuration = 0;
+
+    workouts.forEach(workout => {
+      totalExercises += workout.exercises ? workout.exercises.length : 0;
+      completedExercises += workout.exercises
+        ? workout.exercises.filter(ex => ex.completed).length
+        : 0;
+      totalDuration += workout.duration || 0;
+    });
+
+    statsData = {
+      totalWorkouts: workouts.length,
+      completedWorkouts: workouts.filter(w => w.completed).length,
+      totalExercises,
+      completedExercises,
+      averageDuration: workouts.length > 0 ? Math.round(totalDuration / workouts.length) : 0,
+      weeklyProgress: [],
+      monthlyProgress: [],
+      streakDays: 0,
+      bestDay: null,
+      completionRate: totalExercises > 0
+        ? Math.round((completedExercises / totalExercises) * 100)
+        : 0
+    };
+  } catch (error) {
+    console.error('Error al actualizar estadísticas:', error);
+  }
+}
+
+export function initStatistics() {
+  updateStatsData();
+  renderStatistics();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initStatistics);
+} else {
+  initStatistics();
+}
+
+window.addEventListener('storage', () => {
+  updateStatsData();
+  renderStatistics();
+});
