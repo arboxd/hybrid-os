@@ -1,1 +1,1 @@
-Copie storage.js en tools/tracker/js/ y agregue <script src='js/storage.js'></script> antes de tracker.js.
+Copie workouts-data.js en tools/tracker/js/ y agregue <script src='js/workouts-data.js'></script> antes de tracker.js.
