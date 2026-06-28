@@ -1,894 +1,343 @@
 /*
 ===========================================
 HYBRID TRACKER
-Version 0.2.0
-Build 0004
+Orchestrator Module
+Version 0.3.0
 ===========================================
+
+Este archivo NO contiene lógica propia.
+Solo importa, inicializa y coordina todos los módulos.
+
+Módulos clásicos (window.*):
+  - TrackerConfig   → config.js
+  - TrackerUtils    → utils.js
+  - TrackerStorage  → storage.js
+  - WorkoutData     → workouts-data.js
+
+Módulos ES (import/export):
+  - ui.js
+  - dashboard.js
+  - training.js
+  - history.js
+  - statistics.js
+  - workout-editor.js
+  - import-export.js
+  - profile.js
 */
 
-const TrackerModules={dashboard:null,training:null,profile:null,storage:null,history:null,editor:null};
+// ============================
+// Estado del orquestador
+// ============================
+const TrackerOrchestrator = {
+  initialized: false,
+  currentView: 'dashboard',
 
-const Tracker = {
+  // Referencias a módulos clásicos (disponibles en window)
+  config: null,
+  utils: null,
+  storage: null,
+  workoutData: null,
 
-    version: "0.2.1",
+  // ============================
+  // Inicialización principal
+  // ============================
 
-    state: {
-		
-
-        week: 1,
-		
-		selectedWeek: 1,
-
-		selectedDay: "monday",
-
-        recovery: 85,
-
-        weight: 82.1,
-
-        today: "Push + CrossFit",
-		
-		completedExercises: {},
-		
-		exerciseData:{},
-
-    },
-	
-			profile: {
-
-    name: "Obed",
-
-    age: 38,
-
-    height: 171,
-
-    weight: 82.1,
-
-    targetWeight: 77,
-
-    goal: "HYROX + Spartan",
-
-    gym: "Smart Fit Tepozan"
-
-},
-
-	
-	workouts: {
-
-   week1:{
-
-    monday:{
-        name:"Push + CrossFit",
-        duration:90,
-        exercises:[
-            {name:"Press banca",sets:4,reps:"6-8",weight:60},
-            {name:"Press inclinado mancuerna",sets:3,reps:"8-10",weight:22.5},
-            {name:"Press militar",sets:3,reps:"8-10",weight:20},
-            {name:"Elevaciones laterales",sets:3,reps:"15",weight:10},
-            {name:"CrossFit WOD",sets:1,reps:"Libre",weight:0}
-        ]
-    },
-
-    tuesday:{
-        name:"Running + Pull",
-        duration:75,
-        exercises:[
-            {name:"Running Z2",sets:1,reps:"5 km",weight:0},
-            {name:"Dominadas",sets:4,reps:"5",weight:0},
-            {name:"Remo con barra",sets:4,reps:"8-10",weight:50},
-            {name:"Jalón al pecho",sets:3,reps:"10-12",weight:55},
-            {name:"Curl bíceps",sets:3,reps:"12",weight:12}
-        ]
-    },
-
-    wednesday:{
-        name:"Natación + Pierna",
-        duration:90,
-        exercises:[
-            {name:"Natación técnica",sets:1,reps:"1200 m",weight:0},
-            {name:"Sentadilla",sets:4,reps:"6-8",weight:80},
-            {name:"Peso muerto rumano",sets:3,reps:"8-10",weight:70},
-            {name:"Prensa",sets:3,reps:"12",weight:140},
-            {name:"Pantorrilla",sets:4,reps:"15",weight:60}
-        ]
-    },
-
-    thursday:{
-        name:"Tempo Run + Upper",
-        duration:80,
-        exercises:[
-            {name:"Tempo Run",sets:1,reps:"6 km",weight:0},
-            {name:"Press militar",sets:4,reps:"8",weight:22.5},
-            {name:"Remo mancuerna",sets:3,reps:"10",weight:25},
-            {name:"Face Pull",sets:3,reps:"15",weight:25},
-            {name:"Plancha",sets:3,reps:"60 seg",weight:0}
-        ]
-    },
-
-    friday:{
-        name:"Natación + Full Body",
-        duration:90,
-        exercises:[
-            {name:"Natación continua",sets:1,reps:"1500 m",weight:0},
-            {name:"Sentadilla frontal",sets:3,reps:"8",weight:60},
-            {name:"Press banca",sets:3,reps:"8",weight:55},
-            {name:"Dominadas",sets:3,reps:"5",weight:0},
-            {name:"Farmer Walk",sets:4,reps:"30 m",weight:24}
-        ]
-    },
-
-    saturday:{
-        name:"Long Run",
-        duration:75,
-        exercises:[
-            {name:"Carrera larga",sets:1,reps:"10-14 km",weight:0},
-            {name:"Movilidad",sets:1,reps:"20 min",weight:0}
-        ]
-    },
-
-    sunday:{
-        name:"Recovery",
-        duration:30,
-        exercises:[
-            {name:"Movilidad",sets:1,reps:"20 min",weight:0},
-            {name:"Foam Roller",sets:1,reps:"15 min",weight:0},
-            {name:"Estiramiento",sets:1,reps:"15 min",weight:0}
-        ]
+  /**
+   * init()
+   * Punto de entrada único del tracker.
+   * Verifica módulos clásicos y lanza módulos ES.
+   */
+  init() {
+    if (this.initialized) {
+      console.warn('⚠️ Tracker ya está inicializado');
+      return;
     }
 
-}
-
-},
-
-   init(){
-
-    console.log(
-
-        "HYBRID TRACKER",
-
-        this.version
-
-    );
-
-    this.loadProfile();
-
-    this.loadTrainingProgress();
-	
-	this.loadExerciseData();
-
-    if(TrackerModules.dashboard?.render){TrackerModules.dashboard.render(this);}else{this.renderDashboard();}
-
-    this.initNavigation();
-	
-
-},
-
-    renderDashboard(){
-
-        this.setText(
-            "week",
-            this.state.week
-        );
-
-        this.setText(
-            "recovery",
-            this.state.recovery + "%"
-        );
-		
-		document
-     .getElementById("page-container")
-    .innerHTML = `
-
-<div class="card">
-
-    <h2>🏃 Bienvenido</h2>
-
-    <p>
-        Tu preparación para HYROX y Spartan ya está en marcha.
-    </p>
-
-</div>
-
-<div class="card">
-
-    <h3>📅 Entrenamiento de hoy</h3>
-
-    <p>
-
-        ${this.state.today}
-
-    </p>
-
-</div>
-
-<div class="card">
-
-    <h3>⚖️ Peso actual</h3>
-
-    <h2>
-
-        ${this.state.weight} kg
-
-    </h2>
-
-</div>
-
-<div class="card">
-
-    <h3>❤️ Recovery</h3>
-
-    <h2>
-
-        ${this.state.recovery}%
-
-    </h2>
-
-</div>
-
-<div class="card">
-
-    <h3>📆 Semana</h3>
-
-    <h2>
-
-        ${this.state.week}
-
-    </h2>
-
-</div>
-
-<div class="card">
-
-    <h3>🎯 Próximo objetivo</h3>
-
-    <p>
-
-        HYROX + Spartan
-
-    </p>
-	
-	<button onclick="Tracker.renderProfile()">
-
-    Editar perfil
-
-</button>
-
-</div>
-
-`;
-
-    },
-	
-	
-	renderTraining(){
-
-    const workout =
-        this.workouts[
-            "week" + this.state.selectedWeek
-        ][
-            this.state.selectedDay
-        ];
-		
-		const completedCount =
-    workout.exercises.filter((exercise,index)=>{
-
-        const key =
-            this.state.selectedDay + "-" + index;
-
-        return this.state.completedExercises[key];
-
-    }).length;
-
-const progress =
-    Math.round(
-        completedCount /
-        workout.exercises.length * 100
-    );
-
-    const days = [
-
-        ["monday","Lun"],
-
-        ["tuesday","Mar"],
-
-        ["wednesday","Mié"],
-
-        ["thursday","Jue"],
-
-        ["friday","Vie"],
-
-        ["saturday","Sáb"],
-
-        ["sunday","Dom"]
-
+    console.log('🚀 Iniciando Hybrid Tracker v' + TrackerConfig.VERSION);
+
+    // 1. Verificar módulos clásicos
+    if (!this._verifyClassicModules()) {
+      console.error('❌ Módulos clásicos no disponibles. Abortando.');
+      return;
+    }
+
+    // 2. Asignar referencias
+    this.config = TrackerConfig;
+    this.utils = TrackerUtils;
+    this.storage = TrackerStorage;
+    this.workoutData = WorkoutData;
+
+    // 3. Cargar estado guardado
+    this._loadSavedState();
+
+    // 4. Inicializar módulos ES (via eventos)
+    this._initESModules();
+
+    // 5. Marcar como inicializado
+    this.initialized = true;
+
+    console.log('✅ Hybrid Tracker inicializado correctamente');
+  },
+
+  // ============================
+  // Verificación de módulos
+  // ============================
+
+  /**
+   * _verifyClassicModules()
+   * Verifica que los 4 módulos clásicos estén disponibles en window.
+   */
+  _verifyClassicModules() {
+    const required = [
+      { name: 'TrackerConfig', ref: typeof TrackerConfig !== 'undefined' },
+      { name: 'TrackerUtils', ref: typeof TrackerUtils !== 'undefined' },
+      { name: 'TrackerStorage', ref: typeof TrackerStorage !== 'undefined' },
+      { name: 'WorkoutData', ref: typeof WorkoutData !== 'undefined' }
     ];
 
-    let html = `
+    let allOk = true;
 
-    <div class="card">
-
-        <h2>
-
-            Semana ${this.state.selectedWeek}
-
-        </h2>
-
-        <div class="day-selector">
-
-    `;
-
-    days.forEach(day=>{
-
-        html += `
-
-        <button
-
-            onclick="Tracker.changeDay('${day[0]}')"
-
-            ${this.state.selectedDay===day[0] ? "disabled":""}
-
-        >
-
-            ${day[1]}
-
-        </button>
-
-        `;
-
+    required.forEach(mod => {
+      if (!mod.ref) {
+        console.error(`❌ Módulo no encontrado: \${mod.name}`);
+        allOk = false;
+      } else {
+        console.log(`✅ \${mod.name} cargado`);
+      }
     });
 
-    html += `
-
-        </div>
-
-    </div>
-
-    <div class="card">
-
-    <h2>
-
-        ${workout.name}
-
-    </h2>
-
-    <p>
-
-        Duración:
-        ${workout.duration} min
-
-    </p>
-
-    <p>
-
-        Progreso:
-        ${completedCount}
-        /
-        ${workout.exercises.length}
-
-        (${progress}%)
-
-    </p>
-
-    <progress
-
-        value="${progress}"
-
-        max="100"
-
-        style="width:100%;height:18px;">
-
-    </progress>
-
-    <div id="rest-timer-card" style="margin-top:12px;padding:10px;border:1px solid #ccc;border-radius:8px;display:none;">
-        <strong>⏱ Descanso</strong>
-        <div id="rest-timer-text">01:30</div>
-        <button onclick="Tracker.stopRestTimer()">Saltar</button>
-    </div>
-
-</div>
-
-    `;
-
-    workout.exercises.forEach((exercise,index)=>{
-
-    const key =
-        this.state.selectedDay + "-" + index;
-
-    const completed =
-        this.state.completedExercises[key] || false;
-
-        html += `
-
-<div class="card">
-
-<h3>
-
-${completed ? "✅" : "⬜"} ${exercise.name}
-
-</h3>
-
-<p>
-
-${exercise.sets} x ${exercise.reps}
-
-</p>
-
-<label>
-
-Peso
-
-</label>
-
-<input
-
-id="weight-${key}"
-
-type="number"
-
-value="${
-
-this.state.exerciseData[key]?.weight ??
-
-exercise.weight
-
-}"
-
-step="2.5"
-
-onchange="Tracker.saveExerciseData(
-
-'${this.state.selectedDay}',
-
-${index}
-
-)"
->
-
-<label>
-
-RPE
-
-</label>
-
-<input
-
-id="rpe-${key}"
-
-type="number"
-
-min="1"
-
-max="10"
-
-value="${
-
-this.state.exerciseData[key]?.rpe ?? ""
-
-}"
-
-onchange="Tracker.saveExerciseData(
-
-'${this.state.selectedDay}',
-
-${index}
-
-)"
->
-
-<label>
-
-Notas
-
-</label>
-
-<textarea
-
-id="notes-${key}"
-
-rows="2"
-
-onchange="Tracker.saveExerciseData(
-
-'${this.state.selectedDay}',
-
-${index}
-
-)"
-
->${
-
-this.state.exerciseData[key]?.notes ?? ""
-
-}</textarea>
-
-<br><br>
-
-<button
-
-onclick="Tracker.toggleExercise(
-'${this.state.selectedDay}',
-${index}
-)"
-
->
-
-${completed ? "Desmarcar" : "Completar"}
-
-</button>
-
-</div>
-
-`;
-
+    return allOk;
+  },
+
+  // ============================
+  // Carga de estado
+  // ============================
+
+  /**
+   * _loadSavedState()
+   * Carga el estado guardado desde storage.
+   */
+  _loadSavedState() {
+    const profile = TrackerStorage.loadProfile();
+    const training = TrackerStorage.loadTraining();
+    const history = TrackerStorage.loadHistory();
+    const exercises = TrackerStorage.loadExercises();
+
+    if (profile) {
+      console.log(`👤 Perfil cargado: \${profile.name}`);
+    } else {
+      // Usar perfil por defecto de config
+      TrackerStorage.saveProfile(TrackerConfig.DEFAULT_PROFILE);
+      console.log('👤 Perfil por defecto cargado');
+    }
+
+    console.log(`📅 Semana actual: \${TrackerConfig.DEFAULT_STATE.week}`);
+    console.log(`📋 Historial: \${history.length} registros`);
+  },
+
+  // ============================
+  // Inicialización de módulos ES
+  // ============================
+
+  /**
+   * _initESModules()
+   * Coordina la inicialización de los módulos ES via eventos del DOM.
+   * Los módulos ES se auto-inicializan, aquí solo coordinamos el orden.
+   */
+  _initESModules() {
+    // Escuchar navegación desde módulos ES
+    window.addEventListener('hybrid-os:navigate', (e) => {
+      const { view } = e.detail;
+      this.currentView = view;
+      console.log(`📍 Vista activa: \${view}`);
     });
 
-    document
-        .getElementById("page-container")
-        .innerHTML = html;
+    // Escuchar cambios en storage desde módulos ES
+    window.addEventListener('storage', () => {
+      console.log('💾 Storage actualizado, sincronizando...');
+      this._syncModules();
+    });
 
-},
+    // Escuchar errores de módulos ES
+    window.addEventListener('hybrid-os:error', (e) => {
+      const { module, message } = e.detail;
+      console.error(`❌ Error en módulo \${module}: \${message}`);
+    });
 
+    console.log('🔗 Módulos ES coordinados');
+  },
 
+  // ============================
+  // Sincronización
+  // ============================
 
-changeDay(day){
+  /**
+   * _syncModules()
+   * Sincroniza el estado entre módulos clásicos y ES.
+   */
+  _syncModules() {
+    // Re-cargar estado desde storage
+    const training = TrackerStorage.loadTraining();
+    const history = TrackerStorage.loadHistory();
 
-    this.state.selectedDay = day;
+    // Notificar a módulos ES via evento
+    window.dispatchEvent(new CustomEvent('hybrid-os:sync', {
+      detail: { training, history }
+    }));
+  },
 
-    this.renderTraining();
+  // ============================
+  // API pública del orquestador
+  // ============================
 
-},
+  /**
+   * navigate(view)
+   * Navega a una vista específica.
+   */
+  navigate(view) {
+    if (!this.initialized) {
+      console.warn('⚠️ Tracker no inicializado');
+      return;
+    }
 
+    window.dispatchEvent(new CustomEvent('hybrid-os:navigate', {
+      detail: { view }
+    }));
+  },
 
-toggleExercise(day,index){
+  /**
+   * getProfile()
+   * Retorna el perfil activo del usuario.
+   */
+  getProfile() {
+    return TrackerStorage.loadProfile() || TrackerConfig.DEFAULT_PROFILE;
+  },
 
-    const key = day + "-" + index;
+  /**
+   * getWorkoutForDay(week, day)
+   * Retorna el workout de un día específico.
+   */
+  getWorkoutForDay(week = 1, day = 'monday') {
+    const weekKey = `week${week}`;
+    if (WorkoutData[weekKey] && WorkoutData[weekKey][day]) {
+      return WorkoutData[weekKey][day];
+    }
+    return null;
+  },
 
-    this.state.completedExercises[key] =
-        !this.state.completedExercises[key];
+  /**
+   * getTodayWorkout()
+   * Retorna el workout del día actual.
+   */
+  getTodayWorkout() {
+    const state = TrackerConfig.DEFAULT_STATE;
+    return this.getWorkoutForDay(state.week, state.selectedDay);
+  },
 
-    this.saveTrainingProgress();
+  /**
+   * saveProgress(data)
+   * Guarda progreso de entrenamiento.
+   */
+  saveProgress(data) {
+    if (!this.initialized) return false;
+    return TrackerStorage.saveTraining(data);
+  },
 
-    this.renderTraining();
+  /**
+   * saveToHistory(entry)
+   * Agrega una entrada al historial.
+   */
+  saveToHistory(entry) {
+    if (!this.initialized) return false;
 
-},
+    const history = TrackerStorage.loadHistory();
+    history.push({
+      ...entry,
+      date: TrackerUtils.today(),
+      id: TrackerUtils.uuid()
+    });
 
-saveExerciseData(day,index){
+    return TrackerStorage.saveHistory(history);
+  },
 
-    const key = day + "-" + index;
+  /**
+   * exportData()
+   * Exporta todos los datos usando TrackerUtils.
+   */
+  exportData() {
+    if (!this.initialized) return;
 
-    this.state.exerciseData[key]={
-
-        weight:document.getElementById(
-            "weight-"+key
-        ).value,
-
-        rpe:document.getElementById(
-            "rpe-"+key
-        ).value,
-
-        notes:document.getElementById(
-            "notes-"+key
-        ).value
-
+    const data = {
+      profile: TrackerStorage.loadProfile(),
+      training: TrackerStorage.loadTraining(),
+      exercises: TrackerStorage.loadExercises(),
+      history: TrackerStorage.loadHistory(),
+      exportedAt: new Date().toISOString(),
+      version: TrackerConfig.VERSION
     };
 
-    localStorage.setItem(
-
-        "tracker-exercises",
-
-        JSON.stringify(
-
-            this.state.exerciseData
-
-        )
-
+    TrackerUtils.downloadJSON(
+      `hybrid-tracker-backup-${TrackerUtils.today()}.json`,
+      data
     );
 
-},
-
-renderProfile(){
-
-document.getElementById("page-container").innerHTML=`
-
-<div class="card">
-
-<h2>
-
-Perfil
-
-</h2>
-
-<label>
-
-Nombre
-
-</label>
-
-<input
-id="profile-name"
-value="${this.profile.name}">
-
-<label>
-
-Edad
-
-</label>
-
-<input
-id="profile-age"
-type="number"
-value="${this.profile.age}">
-
-<label>
-
-Estatura (cm)
-
-</label>
-
-<input
-id="profile-height"
-type="number"
-value="${this.profile.height}">
-
-<label>
-
-Peso (kg)
-
-</label>
-
-<input
-id="profile-weight"
-type="number"
-step="0.1"
-value="${this.profile.weight}">
-
-<label>
-
-Peso objetivo
-
-</label>
-
-<input
-id="profile-target"
-type="number"
-step="0.1"
-value="${this.profile.targetWeight}">
-
-<label>
-
-Objetivo
-
-</label>
-
-<input
-id="profile-goal"
-value="${this.profile.goal}">
-
-<label>
-
-Gimnasio
-
-</label>
-
-<input
-id="profile-gym"
-value="${this.profile.gym}">
-
-<br><br>
-
-<button
-onclick="Tracker.saveProfile()">
-
-Guardar
-
-</button>
-
-<button
-onclick="Tracker.renderDashboard()">
-
-Cancelar
-
-</button>
-
-</div>
-
-`;
-
-},
-
-
-saveProfile(){
-
-    this.profile.name =
-        document.getElementById("profile-name").value;
-
-    this.profile.age =
-        parseInt(
-            document.getElementById("profile-age").value
-        );
-
-    this.profile.height =
-        parseInt(
-            document.getElementById("profile-height").value
-        );
-
-    this.profile.weight =
-        parseFloat(
-            document.getElementById("profile-weight").value
-        );
-
-    this.profile.targetWeight =
-        parseFloat(
-            document.getElementById("profile-target").value
-        );
-
-    this.profile.goal =
-        document.getElementById("profile-goal").value;
-
-    this.profile.gym =
-        document.getElementById("profile-gym").value;
-
-    this.state.weight =
-        this.profile.weight;
-
-    localStorage.setItem(
-        "tracker-profile",
-        JSON.stringify(this.profile)
-    );
-
-    if(TrackerModules.dashboard?.render){TrackerModules.dashboard.render(this);}else{this.renderDashboard();}
-
-},
-
-
-saveTrainingProgress(){
-
-    localStorage.setItem(
-
-        "tracker-training",
-
-        JSON.stringify(
-
-            this.state.completedExercises
-
-        )
-
-    );
-
-},
-
-
-loadProfile(){
-
-    const profile =
-        localStorage.getItem("tracker-profile");
-
-    if(profile){
-
-        this.profile =
-            JSON.parse(profile);
-
-        this.state.weight =
-            this.profile.weight;
-
+    console.log('📦 Datos exportados correctamente');
+  },
+
+  /**
+   * importData(file)
+   * Importa datos desde un archivo JSON usando TrackerUtils.
+   */
+  async importData(file) {
+    if (!this.initialized) return;
+
+    try {
+      const data = await TrackerUtils.readJSONFile(file);
+
+      if (!data.version) {
+        console.error('❌ Archivo de backup inválido');
+        return false;
+      }
+
+      if (data.profile) TrackerStorage.saveProfile(data.profile);
+      if (data.training) TrackerStorage.saveTraining(data.training);
+      if (data.exercises) TrackerStorage.saveExercises(data.exercises);
+      if (data.history) TrackerStorage.saveHistory(data.history);
+
+      // Sincronizar módulos ES
+      this._syncModules();
+
+      console.log('✅ Datos importados correctamente');
+      return true;
+
+    } catch (error) {
+      console.error('❌ Error al importar datos:', error);
+      return false;
     }
+  },
 
-},
-
-
-loadTrainingProgress(){
-
-    const progress =
-
-        localStorage.getItem(
-
-            "tracker-training"
-
-        );
-
-    if(progress){
-
-        this.state.completedExercises =
-
-            JSON.parse(progress);
-
-    }
-
-},
-
-
-loadExerciseData(){
-
-    const saved=
-
-        localStorage.getItem(
-
-            "tracker-exercises"
-
-        );
-
-    if(saved){
-
-        this.state.exerciseData=
-
-            JSON.parse(saved);
-
-    }
-
-},
-
-
-
-    setText(id,value){
-
-        const element =
-        document.getElementById(id);
-
-        if(element){
-
-            element.textContent=value;
-
-        }
-
-    },
-
-    initNavigation(){
-
-        const buttons =
-        document.querySelectorAll(".nav-btn");
-
-        const pages =
-        document.querySelectorAll(".page");
-
-        buttons.forEach(button=>{
-
-            button.addEventListener("click",()=>{
-
-                buttons.forEach(btn=>
-                    btn.classList.remove("active")
-                );
-
-                button.classList.add("active");
-
-                pages.forEach(page=>
-                    page.classList.remove("active-page")
-                );
-
-                const id = button.dataset.page;
-
-if(id==="dashboard"){
-
-    if(TrackerModules.dashboard?.render){TrackerModules.dashboard.render(this);}else{this.renderDashboard();}
-
-}
-
-if(id==="training"){
-
-    this.renderTraining();
-
-}
-
-            });
-
-        });
-
-    }
-
-
-
-registerModule(name,module){
-    TrackerModules[name]=module;
-},
-
-getModule(name){
-    return TrackerModules[name];
-},
-
+  /**
+   * getState()
+   * Retorna el estado actual del orquestador (para debugging).
+   */
+  getState() {
+    return {
+      initialized: this.initialized,
+      currentView: this.currentView,
+      version: TrackerConfig.VERSION,
+      profile: this.getProfile(),
+      storageKeys: TrackerConfig.STORAGE_KEYS
+    };
+  }
 };
 
-document.addEventListener(
-
-    "DOMContentLoaded",
-
-    ()=>Tracker.init()
-
-);
+// ============================
+// Auto-inicialización
+// ============================
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    TrackerOrchestrator.init();
+  });
+} else {
+  TrackerOrchestrator.init();
+}
