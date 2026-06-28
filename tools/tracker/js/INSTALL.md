@@ -1,1 +1,1 @@
-Reemplace tools/tracker/js/tracker.js por el archivo tracker.js incluido en este paquete.
+Copie storage.js en tools/tracker/js/ y agregue <script src='js/storage.js'></script> antes de tracker.js.
