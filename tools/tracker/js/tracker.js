@@ -336,7 +336,11 @@ const progress =
 
     html += `
 
-        <div class="card">
+        </div>
+
+    </div>
+
+    <div class="card">
 
     <h2>
 
