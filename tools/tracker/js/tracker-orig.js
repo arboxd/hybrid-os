@@ -6,11 +6,9 @@ Build 0004
 ===========================================
 */
 
-const TrackerModules={dashboard:null,training:null,profile:null,storage:null,history:null,editor:null};
-
 const Tracker = {
 
-    version: "0.2.1",
+    version: "0.2.0",
 
     state: {
 		
@@ -155,7 +153,7 @@ const Tracker = {
 	
 	this.loadExerciseData();
 
-    if(TrackerModules.dashboard?.render){TrackerModules.dashboard.render(this);}else{this.renderDashboard();}
+    this.renderDashboard();
 
     this.initNavigation();
 	
@@ -377,12 +375,6 @@ const progress =
         style="width:100%;height:18px;">
 
     </progress>
-
-    <div id="rest-timer-card" style="margin-top:12px;padding:10px;border:1px solid #ccc;border-radius:8px;display:none;">
-        <strong>⏱ Descanso</strong>
-        <div id="rest-timer-text">01:30</div>
-        <button onclick="Tracker.stopRestTimer()">Saltar</button>
-    </div>
 
 </div>
 
@@ -735,7 +727,7 @@ saveProfile(){
         JSON.stringify(this.profile)
     );
 
-    if(TrackerModules.dashboard?.render){TrackerModules.dashboard.render(this);}else{this.renderDashboard();}
+    this.renderDashboard();
 
 },
 
@@ -817,7 +809,6 @@ loadExerciseData(){
 },
 
 
-
     setText(id,value){
 
         const element =
@@ -857,7 +848,7 @@ loadExerciseData(){
 
 if(id==="dashboard"){
 
-    if(TrackerModules.dashboard?.render){TrackerModules.dashboard.render(this);}else{this.renderDashboard();}
+    this.renderDashboard();
 
 }
 
@@ -872,16 +863,6 @@ if(id==="training"){
         });
 
     }
-
-
-
-registerModule(name,module){
-    TrackerModules[name]=module;
-},
-
-getModule(name){
-    return TrackerModules[name];
-},
 
 };
 
