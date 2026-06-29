@@ -162,14 +162,26 @@
 
 </main>
 </div>
-<script src="js/config.js"></script>
-<script src="js/utils.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/workouts-data.js"></script>
-<script type="module" src="/js/dashboard.js"></script>
-<script type="module" src="/js/profile.js"></script>
-<script src="js/tracker.js"></script>
 
+<!-- Módulos clásicos (sin type="module") -->
+<script src="./js/config.js"></script>
+<script src="./js/utils.js"></script>
+<script src="./js/storage.js"></script>
+<script src="./js/workouts-data.js"></script>
+
+<!-- Módulos ES (con type="module" y rutas relativas) -->
+<script type="module" src="./js/profile-setup.js"></script>
+<script type="module" src="./js/ui.js"></script>
+<script type="module" src="./js/dashboard.js"></script>
+<script type="module" src="./js/training.js"></script>
+<script type="module" src="./js/history.js"></script>
+<script type="module" src="./js/statistics.js"></script>
+<script type="module" src="./js/workout-editor.js"></script>
+<script type="module" src="./js/import-export.js"></script>
+<script type="module" src="./js/profile.js"></script>
+
+<!-- Orquestador al final -->
+<script src="./js/tracker.js"></script>
 </body>
 
 </html>

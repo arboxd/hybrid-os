@@ -40,12 +40,23 @@ const TrackerOrchestrator = {
   // ============================
   // Inicialización principal
   // ============================
+  
+  import { needsSetup, renderProfileSetup } from './profile-setup.js';
+
 
   init() {
     if (this.initialized) {
       console.warn('⚠️ Tracker ya está inicializado');
       return;
     }
+
+if (needsSetup()) {
+    renderProfileSetup((profile) => {
+      console.log(`👋 Bienvenido \${profile.name}!`);
+      this.init(); // re-inicializar con perfil ya guardado
+    });
+    return; // detener init hasta que complete el setup
+  }
 
     console.log('🚀 Iniciando Hybrid Tracker v' + TrackerConfig.VERSION);
 
