@@ -51,7 +51,7 @@ export function renderDashboard() {
   dayTitle.className = 'day-summary-title';
 
   const dayProgress = document.createElement('p');
-  dayProgress.textContent = `Ejercicios: ${dashboardData.completedExercises}/${dashboardData.totalExercises}`;
+  dayProgress.textContent = `Ejercicios: ${dashboardData.completedExercises}${dashboardData.totalExercises}`;
   dayProgress.className = 'day-progress';
 
   daySummary.appendChild(dayTitle);
@@ -187,3 +187,9 @@ window.addEventListener('storage', () => {
   updateDashboardData();
   renderDashboard();
 });
+
+// Función para actualizar el Dashboard desde el módulo de entrenamiento
+export function refreshDashboard() {
+  updateDashboardData();
+  renderDashboard();
+}

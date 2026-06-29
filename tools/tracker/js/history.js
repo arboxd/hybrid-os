@@ -19,12 +19,7 @@ let filters = {
 // Funciones extraídas
 // ============================
 
-/**
- * renderHistory()
- * Renderiza el historial de entrenamientos con lista y filtros.
- * Optimizada: usa paginación y búsqueda eficiente.
- */
-export function renderHistory() {
+function renderHistory() {
   const container = document.getElementById('history-container');
   if (!container) return;
 
@@ -53,10 +48,6 @@ export function renderHistory() {
   }
 }
 
-/**
- * createFiltersSection()
- * Crea la sección de filtros.
- */
 function createFiltersSection() {
   const section = document.createElement('div');
   section.className = 'filters-section';
@@ -152,11 +143,6 @@ function createFiltersSection() {
   return section;
 }
 
-/**
- * filterWorkouts()
- * Filtra workouts según los criterios actuales.
- * Optimizada: usa búsqueda en una sola iteración.
- */
 function filterWorkouts() {
   return workoutsHistory.filter(workout => {
     // Filtro por búsqueda
@@ -164,13 +150,15 @@ function filterWorkouts() {
       return false;
     }
 
+    const workoutDate = workout.date ? new Date(workout.date) : null;
+
     // Filtro por fecha desde
-    if (filters.dateFrom && workout.date && new Date(workout.date) < new Date(filters.dateFrom)) {
+    if (filters.dateFrom && workoutDate && workoutDate < new Date(filters.dateFrom)) {
       return false;
     }
 
     // Filtro por fecha hasta
-    if (filters.dateTo && workout.date && new Date(workout.date) > new Date(filters.dateTo)) {
+    if (filters.dateTo && workoutDate && workoutDate > new Date(filters.dateTo)) {
       return false;
     }
 
@@ -183,10 +171,6 @@ function filterWorkouts() {
   });
 }
 
-/**
- * createHistoryList(workouts)
- * Crea la lista de workouts con paginación.
- */
 function createHistoryList(workouts) {
   const list = document.createElement('div');
   list.className = 'history-list';
@@ -208,10 +192,6 @@ function createHistoryList(workouts) {
   return list;
 }
 
-/**
- * createWorkoutCard(workout, index)
- * Crea una tarjeta individual de workout.
- */
 function createWorkoutCard(workout, index) {
   const card = document.createElement('div');
   card.className = 'workout-card';
@@ -230,7 +210,7 @@ function createWorkoutCard(workout, index) {
   // Fecha
   const date = document.createElement('p');
   date.className = 'workout-date';
-  date.textContent = workout.date ? `Fecha: ${new Date(workout.date).toLocaleDateString()}` : 'Fecha: No especificada';
+  date.textContent = workout.date ? `Fecha: \${new Date(workout.date).toLocaleDateString()}` : 'Fecha: No especificada';
 
   // Ejercicios
   const exercises = document.createElement('p');
@@ -263,47 +243,7 @@ function createWorkoutCard(workout, index) {
   return card;
 }
 
-/**
- * createSummary(workouts)
- * Crea resumen estadístico del historial.
- */
-function createSummary(workouts) {
-  const summary = document.createElement('div');
-  summary.className = 'history-summary';
-
-  const total = workouts.length;
-  const completed = workouts.filter(w => w.completed).length;
-  const totalExercises = workouts.reduce((acc, w) => acc + w.exercises.length, 0);
-  const completedExercises = workouts.reduce((acc, w) => acc + w.exercises.filter(ex => ex.completed).length, 0);
-
-  summary.innerHTML = `
-    <div class="summary-item">
-      <span class="summary-value">${total}</span>
-      <span class="summary-label">Total</span>
-    </div>
-    <div class="summary-item">
-      <span class="summary-value">${completed}</span>
-      <span class="summary-label">Completados</span>
-    </div>
-    <div class="summary-item">
-      <span class="summary-value">${totalExercises}</span>
-      <span class="summary-label">Ejercicios</span>
-    </div>
-    <div class="summary-item">
-      <span class="summary-value">${completedExercises}</span>
-      <span class="summary-label">Ejercicios Completados</span>
-    </div>
-  `;
-
-  return summary;
-}
-
-/**
- * loadWorkoutForEdit(workout)
- * Prepara workout para edición en el editor.
- */
-export function loadWorkoutForEdit(workout) {
-  // Importar workout al módulo editor
+function loadWorkoutForEdit(workout) {
   const editorModule = window.workoutEditor;
   if (editorModule) {
     editorModule.currentWorkout = workout;
@@ -312,11 +252,7 @@ export function loadWorkoutForEdit(workout) {
   }
 }
 
-/**
- * deleteWorkout(id)
- * Elimina un workout de localStorage.
- */
-export function deleteWorkout(id) {
+function deleteWorkout(id) {
   const storageKey = 'hybrid_os_workouts_data';
   const stored = localStorage.getItem(storageKey);
 
@@ -346,11 +282,7 @@ export function deleteWorkout(id) {
   showSuccessMessage('Entrenamiento eliminado');
 }
 
-/**
- * loadWorkoutsHistory()
- * Recupera todos los workouts desde localStorage.
- */
-export function loadWorkoutsHistory() {
+function loadWorkoutsHistory() {
   const storageKey = 'hybrid_os_workouts_data';
   const stored = localStorage.getItem(storageKey);
 
@@ -364,6 +296,13 @@ export function loadWorkoutsHistory() {
         }
         return 0;
       });
+
+      // Si no hay filtros, mostrar el último entrenamiento por defecto
+      if (workoutsHistory.length > 0) {
+        const lastWorkout = workoutsHistory[workoutsHistory.length - 1];
+        filters.dateFrom = lastWorkout.date; // Ajustar el filtro de fecha desde
+        filters.dateTo = lastWorkout.date;   // Ajustar el filtro de fecha hasta
+      }
     } catch (error) {
       console.error('Error al cargar historial:', error);
       workoutsHistory = [];
@@ -373,10 +312,6 @@ export function loadWorkoutsHistory() {
   }
 }
 
-/**
- * showSuccessMessage(message)
- * Muestra mensaje de éxito.
- */
 function showSuccessMessage(message) {
   const container = document.getElementById('history-container');
   if (!container) return;
@@ -393,11 +328,7 @@ function showSuccessMessage(message) {
 // Inicialización
 // ============================
 
-/**
- * initHistory()
- * Inicializa el módulo y renderiza el historial.
- */
-export function initHistory() {
+function initHistory() {
   loadWorkoutsHistory();
   renderHistory();
 }
@@ -408,7 +339,7 @@ if (document.readyState === 'loading') {
   initHistory();
 }
 
-// Actualizar cuando se guardan cambios
+// Actualizar cuando cambia el storage
 window.addEventListener('storage', () => {
   loadWorkoutsHistory();
   renderHistory();

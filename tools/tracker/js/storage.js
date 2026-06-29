@@ -37,35 +37,38 @@ const TrackerStorage = {
     },
 
     saveProfile(profile) {
-        return this.set(TrackerConfig.STORAGE_KEYS.PROFILE, profile);
+        return this.set('PROFILE', profile);
     },
 
     loadProfile() {
-        return this.get(TrackerConfig.STORAGE_KEYS.PROFILE, null);
+        return this.get('PROFILE', null);
     },
 
     saveTraining(progress) {
-        return this.set(TrackerConfig.STORAGE_KEYS.TRAINING, progress);
+        return this.set('TRAINING', progress);
     },
 
     loadTraining() {
-        return this.get(TrackerConfig.STORAGE_KEYS.TRAINING, {});
+        return this.get('TRAINING', {});
     },
 
     saveExercises(data) {
-        return this.set(TrackerConfig.STORAGE_KEYS.EXERCISES, data);
+        return this.set('EXERCISES', data);
     },
 
     loadExercises() {
-        return this.get(TrackerConfig.STORAGE_KEYS.EXERCISES, {});
+        return this.get('EXERCISES', {});
     },
 
     saveHistory(history) {
-        return this.set(TrackerConfig.STORAGE_KEYS.HISTORY, history);
+        return this.set('HISTORY', history);
     },
 
     loadHistory() {
-        return this.get(TrackerConfig.STORAGE_KEYS.HISTORY, []);
+        return this.get('HISTORY', []);
     }
 
 };
+
+// EXPORTAR EL MÓDULO (no usar export si es clásico)
+window.TrackerStorage = TrackerStorage;

@@ -84,6 +84,7 @@ export function renderTraining() {
                 saveExerciseData(); // Guardar los datos
                 completeBtn.disabled = true; // Desactivar el botón
                 completeBtn.textContent = 'Completado'; // Cambiar texto
+                updateDashboard(); // Actualizar el Dashboard
             });
 
             // Botón de eliminar con confirmación
@@ -179,7 +180,12 @@ export function saveExerciseData() {
         exercisesByDay: {}
     };
 
-    data.exercisesByDay[currentDay] = exercises;
+    data.exercisesByDay[currentDay] = exercises.map(exercise => ({
+        name: exercise.name,
+        reps: exercise.reps,
+        weight: exercise.weight,
+        completed: exercise.completed // Asegúrate de que este valor se guarde
+    }));
 
     try {
         localStorage.setItem(storageKey, JSON.stringify(data));
@@ -242,4 +248,11 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initTraining);
 } else {
     initTraining();
+}
+
+function updateDashboard() {
+    const dashboardModule = window.dashboardModule; // Asegúrate de que el módulo del Dashboard esté accesible
+    if (dashboardModule) {
+        dashboardModule.refreshDashboard(); // Llama a la función de actualización del Dashboard
+    }
 }
