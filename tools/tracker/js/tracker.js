@@ -37,46 +37,43 @@ const TrackerOrchestrator = {
   storage: null,
   workoutData: null,
 
-  // ============================
-  // Inicialización principal
-  // ============================
-  
-  import { needsSetup, renderProfileSetup } from './profile-setup.js';
+// ============================
+// Inicialización principal
+// ============================
 
-
-  init() {
-    if (this.initialized) {
-      console.warn('⚠️ Tracker ya está inicializado');
-      return;
-    }
-
-if (needsSetup()) {
-    renderProfileSetup((profile) => {
-      console.log(`👋 Bienvenido \${profile.name}!`);
-      this.init(); // re-inicializar con perfil ya guardado
-    });
-    return; // detener init hasta que complete el setup
+init() {
+  if (this.initialized) {
+    console.warn('⚠️ Tracker ya está inicializado');
+    return;
   }
 
-    console.log('🚀 Iniciando Hybrid Tracker v' + TrackerConfig.VERSION);
+  if (ProfileSetup.needsSetup()) {
+    ProfileSetup.render((profile) => {
+      console.log(`👋 Bienvenido \${profile.name}!`);
+      this.init();
+    });
+    return;
+  }
 
-    if (!this._verifyClassicModules()) {
-      console.error('❌ Módulos clásicos no disponibles. Abortando.');
-      return;
-    }
+  console.log('🚀 Iniciando Hybrid Tracker v' + TrackerConfig.VERSION);
 
-    this.config    = TrackerConfig;
-    this.utils     = TrackerUtils;
-    this.storage   = TrackerStorage;
-    this.workoutData = WorkoutData;
+  if (!this._verifyClassicModules()) {
+    console.error('❌ Módulos clásicos no disponibles. Abortando.');
+    return;
+  }
 
-    this._loadSavedState();
-    this._initESModules();
+  this.config      = TrackerConfig;
+  this.utils       = TrackerUtils;
+  this.storage     = TrackerStorage;
+  this.workoutData = WorkoutData;
 
-    this.initialized = true;
+  this._loadSavedState();
+  this._initESModules();
 
-    console.log('✅ Hybrid Tracker inicializado correctamente');
-  },
+  this.initialized = true;
+
+  console.log('✅ Hybrid Tracker inicializado correctamente');
+},
 
   // ============================
   // Verificación de módulos

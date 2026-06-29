@@ -39,7 +39,7 @@ body {
 }
 
 /* ========================================= */
-/* HEADER (estático en HTML)                 */
+/* HEADER                                    */
 /* ========================================= */
 
 .header {
@@ -81,7 +81,7 @@ body {
 }
 
 /* ========================================= */
-/* NAVIGATION (estático en HTML)             */
+/* NAVIGATION                                */
 /* ========================================= */
 
 .navigation {
@@ -92,7 +92,6 @@ body {
 }
 
 .nav-btn {
-  border: none;
   cursor: pointer;
   background: var(--surface);
   color: var(--text);
@@ -122,26 +121,15 @@ main {
 }
 
 #page-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 18px;
 }
 
 /* ========================================= */
-/* PAGES (generadas por tracker.js)          */
+/* CARDS GENÉRICAS                           */
 /* ========================================= */
 
-.page {
-  display: none;
-}
-
-.active-page {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px;
-}
-
-/* Cards genéricas */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -169,8 +157,60 @@ main {
 }
 
 /* ========================================= */
+/* BOTONES GLOBALES                          */
+/* ========================================= */
+
+button {
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #00131d;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.btn-secondary:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--muted);
+  padding: 32px;
+  font-size: 0.9rem;
+}
+
+/* ========================================= */
 /* DASHBOARD                                 */
 /* ========================================= */
+
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
 
 .welcome-banner {
   background: var(--surface);
@@ -178,7 +218,6 @@ main {
   border-radius: var(--radius);
   padding: 24px;
   box-shadow: var(--shadow);
-  margin-bottom: 18px;
 }
 
 .welcome-banner h2 {
@@ -193,9 +232,8 @@ main {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 18px;
-  margin-bottom: 18px;
 }
 
 .stat-card {
@@ -230,7 +268,6 @@ main {
   border-radius: var(--radius);
   padding: 20px;
   box-shadow: var(--shadow);
-  margin-bottom: 18px;
 }
 
 .section-title {
@@ -273,10 +310,6 @@ main {
   border-radius: 8px;
 }
 
-.exercise-name {
-  font-weight: 600;
-}
-
 .exercise-detail {
   font-size: 0.85rem;
   color: var(--muted);
@@ -288,49 +321,29 @@ main {
   text-align: center;
 }
 
-.btn-primary {
-  background: var(--primary);
-  color: #00131d;
-  border: none;
-  padding: 12px 20px;
+.history-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--surface2);
   border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-.btn-primary:hover {
-  opacity: 0.9;
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--border);
-  padding: 12px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-.btn-secondary:hover {
-  border-color: var(--primary);
-}
-
-.empty-state {
-  text-align: center;
-  color: var(--muted);
-  padding: 32px;
 }
 
 /* ========================================= */
 /* TRAINING                                  */
 /* ========================================= */
 
+.training-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
 .day-selector {
   display: flex;
   gap: 8px;
-  margin-bottom: 18px;
   flex-wrap: wrap;
 }
 
@@ -342,6 +355,7 @@ main {
   border-radius: 8px;
   cursor: pointer;
   transition: 0.25s;
+  font-family: inherit;
 }
 
 .day-btn:hover {
@@ -352,6 +366,7 @@ main {
   background: var(--primary);
   color: #00131d;
   font-weight: 600;
+  border-color: var(--primary);
 }
 
 .workout-info {
@@ -359,40 +374,50 @@ main {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
 }
 
 .workout-info h2 {
   font-size: 1.2rem;
 }
 
+.progress-bar-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+}
+
 .progress-bar-container {
   background: var(--surface2);
   border-radius: 8px;
-  height: 12px;
-  margin-bottom: 18px;
+  height: 10px;
   overflow: hidden;
+  margin-bottom: 8px;
 }
 
 .progress-bar {
   background: var(--success);
   height: 100%;
-  transition: width 0.3s;
+  transition: width 0.4s ease;
 }
 
 .progress-text {
   font-size: 0.8rem;
   color: var(--muted);
-  margin-top: 8px;
-  display: block;
   text-align: right;
+  display: block;
 }
 
 .exercises-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 18px;
 }
 
 .exercise-card {
@@ -404,6 +429,12 @@ main {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.25s;
+}
+
+.exercise-card:hover {
+  border-color: var(--primary);
 }
 
 .exercise-info {
@@ -416,7 +447,7 @@ main {
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--primary);
-  min-width: 24px;
+  min-width: 28px;
 }
 
 .exercise-details {
@@ -442,12 +473,17 @@ main {
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   transition: 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .complete-btn:hover {
-  border-color: var(--primary);
+  border-color: var(--success);
+  color: var(--success);
 }
 
 .complete-btn.done {
@@ -465,6 +501,13 @@ main {
 /* RUNNING / SWIMMING                        */
 /* ========================================= */
 
+.running-page,
+.swimming-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
 .runs-list,
 .swims-list {
   display: flex;
@@ -477,22 +520,25 @@ main {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  box-shadow: var(--shadow);
 }
 
 .run-date,
 .swim-date {
   font-size: 0.85rem;
   color: var(--muted);
+  min-width: 90px;
 }
 
 .run-distance,
 .swim-distance {
   font-weight: 600;
+  color: var(--primary);
 }
 
 .run-time,
@@ -505,29 +551,40 @@ main {
 .swim-style {
   font-size: 0.8rem;
   color: var(--muted);
+  background: var(--surface2);
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 /* ========================================= */
 /* RECOVERY                                  */
 /* ========================================= */
 
+.recovery-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
 .recovery-score {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 32px;
+  padding: 40px;
   box-shadow: var(--shadow);
   text-align: center;
-  margin-bottom: 18px;
 }
 
 .score-value {
-  font-size: 3rem;
+  display: block;
+  font-size: 3.5rem;
   font-weight: 700;
   color: var(--primary);
+  line-height: 1;
 }
 
 .score-label {
+  display: block;
   font-size: 0.9rem;
   color: var(--muted);
   margin-top: 8px;
@@ -537,31 +594,33 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px;
-  margin-bottom: 18px;
 }
 
 .metric-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 20px 16px;
   text-align: center;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .metric-icon {
   font-size: 1.5rem;
-  margin-bottom: 8px;
 }
 
 .metric-label {
   font-size: 0.75rem;
   color: var(--muted);
-  margin-bottom: 4px;
 }
 
 .metric-value {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
 }
 
 .recovery-actions {
@@ -573,12 +632,17 @@ main {
 /* HISTORY                                   */
 /* ========================================= */
 
+.history-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 18px;
 }
 
 .history-list {
@@ -591,16 +655,18 @@ main {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  box-shadow: var(--shadow);
 }
 
 .history-date {
   font-size: 0.85rem;
   color: var(--muted);
+  min-width: 90px;
 }
 
 .history-type {
@@ -613,22 +679,21 @@ main {
 
 .history-workout {
   font-weight: 600;
-}
-
-.history-status {
-  font-size: 0.85rem;
+  flex: 1;
 }
 
 .history-status.completed {
   color: var(--success);
+  font-size: 0.85rem;
 }
 
 .history-status.partial {
   color: var(--warning);
+  font-size: 0.85rem;
 }
 
 /* ========================================= */
-/* SETUP SCREEN (nuevo)                      */
+/* SETUP SCREEN                              */
 /* ========================================= */
 
 .setup-screen {
@@ -636,7 +701,6 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
   padding: 2rem 1rem;
 }
 
@@ -644,6 +708,7 @@ main {
   width: 100%;
   max-width: 480px;
   background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 2.5rem 2rem;
   box-shadow: var(--shadow);
@@ -656,6 +721,7 @@ main {
 
 .setup-logo-icon {
   font-size: 2.5rem;
+  display: block;
 }
 
 .setup-logo-title {
@@ -669,7 +735,6 @@ main {
 .setup-logo-subtitle {
   font-size: 0.8rem;
   color: var(--muted);
-  margin: 0;
 }
 
 .setup-welcome {
@@ -681,13 +746,12 @@ main {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: var(--text);
 }
 
 .setup-welcome-text {
   font-size: 0.875rem;
   color: var(--muted);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .setup-step {
@@ -709,6 +773,7 @@ main {
   font-size: 0.8rem;
   color: var(--muted);
   margin-bottom: 1.5rem;
+  line-height: 1.5;
 }
 
 .form-group {
@@ -738,6 +803,7 @@ main {
   border-radius: 8px;
   color: var(--text);
   font-size: 0.9rem;
+  font-family: inherit;
   transition: border-color 0.2s;
   box-sizing: border-box;
 }
@@ -764,13 +830,14 @@ main {
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
   margin-top: 0.5rem;
   transition: opacity 0.2s;
 }
 
 .btn-setup-next:hover {
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 .setup-buttons {
@@ -787,12 +854,14 @@ main {
   border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 0.9rem;
+  font-family: inherit;
   cursor: pointer;
   transition: border-color 0.2s;
 }
 
 .btn-setup-back:hover {
   border-color: var(--primary);
+  color: var(--primary);
 }
 
 .btn-setup-confirm {
@@ -804,12 +873,13 @@ main {
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
   transition: opacity 0.2s;
 }
 
 .btn-setup-confirm:hover {
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 .summary-grid {
@@ -869,10 +939,10 @@ main {
 /* TOAST                                     */
 /* ========================================= */
 
-.toast-container {
+#toast-container {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  top: 1.5rem;
+  right: 1.5rem;
   z-index: 9999;
   display: flex;
   flex-direction: column;
@@ -888,6 +958,7 @@ main {
   opacity: 0;
   transition: opacity 0.3s;
   box-shadow: var(--shadow);
+  min-width: 200px;
 }
 
 .toast-visible {
@@ -904,11 +975,12 @@ main {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9998;
+  padding: 1rem;
 }
 
 .modal {
@@ -917,17 +989,20 @@ main {
   border-radius: var(--radius);
   padding: 2rem;
   max-width: 480px;
-  width: 90%;
+  width: 100%;
   box-shadow: var(--shadow);
 }
 
 .modal h2 {
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
+  color: var(--text);
 }
 
 .modal label {
   display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
   margin-bottom: 1rem;
 }
 
@@ -940,7 +1015,15 @@ main {
   border-radius: 8px;
   color: var(--text);
   font-size: 0.9rem;
+  font-family: inherit;
   margin-top: 0.4rem;
+  transition: border-color 0.2s;
+}
+
+.modal label input:focus,
+.modal label select:focus {
+  outline: none;
+  border-color: var(--primary);
 }
 
 .modal-buttons {
@@ -969,31 +1052,76 @@ main {
 
   .header-card {
     flex: 1;
+    min-width: unset;
   }
 
   .navigation {
     overflow-x: auto;
     flex-wrap: nowrap;
+    padding-bottom: 4px;
   }
 
   .nav-btn {
     white-space: nowrap;
   }
 
-  .active-page {
-    grid-template-columns: 1fr;
-  }
-
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .training-actions {
     flex-direction: column;
   }
 
-  .btn-setup-back,
-  .btn-setup-confirm {
-    flex: 1;
+  .history-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .run-card,
+  .swim-card {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .setup-container {
+    padding: 2rem 1.25rem;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal {
+    padding: 1.5rem;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+  }
+
+  .training-actions .btn-primary,
+  .training-actions .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .recovery-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .day-selector {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .day-btn {
+    white-space: nowrap;
   }
 }
