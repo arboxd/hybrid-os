@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>HYBRID TRACKER</title>
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css">
+
+</head>
+
+<body>
+
+<div id="app">
+
+    <!-- ========================================= -->
+    <!-- HEADER                                    -->
+    <!-- ========================================= -->
+
+    <header class="header">
+
+        <div>
+
+            <h1>
+
+                HYBRID TRACKER
+
+            </h1>
+
+            <p>
+
+                Hybrid Athlete Training Platform
+
+            </p>
+
+        </div>
+
+        <div class="header-info">
+
+            <div class="header-card">
+
+                <span class="label">
+
+                    Semana
+
+                </span>
+
+                <span id="week">
+
+                    1
+
+                </span>
+
+            </div>
+
+            <div class="header-card">
+
+                <span class="label">
+
+                    Recovery
+
+                </span>
+
+                <span id="recovery">
+
+                    85%
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- ========================================= -->
+    <!-- NAVIGATION                                -->
+    <!-- ========================================= -->
+
+    <nav class="navigation">
+
+        <button
+            class="nav-btn active"
+            data-page="dashboard">
+
+            Dashboard
+
+        </button>
+
+        <button
+            class="nav-btn"
+            data-page="training">
+
+            Entrenamiento
+
+        </button>
+
+        <button
+            class="nav-btn"
+            data-page="running">
+
+            Carrera
+
+        </button>
+
+        <button
+            class="nav-btn"
+            data-page="swimming">
+
+            Natación
+
+        </button>
+
+        <button
+            class="nav-btn"
+            data-page="recovery">
+
+            Recovery
+
+        </button>
+
+        <button
+            class="nav-btn"
+            data-page="history">
+
+            Historial
+
+        </button>
+
+    </nav>
+
+    <!-- ========================================= -->
+    <!-- MAIN                                      -->
+    <!-- ========================================= -->
+
+   <main>
+
+    <div id="page-container">
+
+        <!-- Todo el contenido será generado por tracker.js -->
+
+    </div>
+
+</main>
+</div>
+
+<!-- Módulos clásicos (sin type="module") -->
+<script src="./js/config.js"></script>
+<script src="./js/utils.js"></script>
+<script src="./js/storage.js"></script>
+<script src="./js/workouts-data.js"></script>
+<script src="js/profile-setup.js"></script>  
+<script src="js/tracker.js"></script>
+
+<!-- Módulos ES (con type="module" y rutas relativas) -->
+<script type="module" src="./js/ui.js"></script>
+<script type="module" src="./js/dashboard.js"></script>
+<script type="module" src="./js/training.js"></script>
+<script type="module" src="./js/history.js"></script>
+<script type="module" src="./js/statistics.js"></script>
+<script type="module" src="./js/workout-editor.js"></script>
+<script type="module" src="./js/import-export.js"></script>
+<script type="module" src="./js/profile.js"></script>
+
+<!-- Orquestador al final -->
+<!-- <script src="./js/tracker.js"></script> -->
+</body>
+
+</html>
