@@ -90,7 +90,7 @@ const ProfileSetup = {
                 type="text"
                 id="setup-name"
                 placeholder="Tu nombre"
-                value="Obed"
+                value="${this.defaultProfile.name}"
                 required>
               <span class="form-hint">Así te identificarás en el tracker</span>
             </div>
@@ -104,8 +104,8 @@ const ProfileSetup = {
                   type="number"
                   id="setup-age"
                   min="10" max="99"
-                  placeholder="38"
-                  value="38">
+                  placeholder="${this.defaultProfile.age}"
+                  value="${this.defaultProfile.age}">
               </div>
 
               <div class="form-group">
@@ -115,8 +115,8 @@ const ProfileSetup = {
                   type="number"
                   id="setup-weight"
                   min="30" max="300" step="0.1"
-                  placeholder="80"
-                  value="80">
+                  placeholder="${this.defaultProfile.weight}"
+                  value="${this.defaultProfile.weight}">
               </div>
 
               <div class="form-group">
@@ -126,8 +126,8 @@ const ProfileSetup = {
                   type="number"
                   id="setup-height"
                   min="100" max="250"
-                  placeholder="171"
-                  value="171">
+                  placeholder="${this.defaultProfile.height}"
+                  value="${this.defaultProfile.height}">
               </div>
 
             </div>
@@ -167,7 +167,7 @@ const ProfileSetup = {
                   type="number"
                   id="setup-sleep"
                   min="0" max="24" step="0.5"
-                  value="7">
+                  value="${this.defaultProfile.sleep}">
               </div>
 
               <div class="form-group">
@@ -177,7 +177,7 @@ const ProfileSetup = {
                   type="number"
                   id="setup-hydration"
                   min="0" max="10" step="0.1"
-                  value="2">
+                  value="${this.defaultProfile.hydration}">
               </div>
 
             </div>
@@ -191,7 +191,7 @@ const ProfileSetup = {
                   type="number"
                   id="setup-hrv"
                   min="0"
-                  value="65">
+                  value="${this.defaultProfile.hrv}">
               </div>
 
               <div class="form-group">
@@ -201,7 +201,7 @@ const ProfileSetup = {
                   type="number"
                   id="setup-hr"
                   min="0"
-                  value="55">
+                  value="${this.defaultProfile.restingHR}">
               </div>
 
             </div>
@@ -391,7 +391,7 @@ const ProfileSetup = {
 
     try {
       localStorage.setItem('hybrid_os_profile_data', JSON.stringify(profile));
-      console.log(`✅ Perfil guardado: \${profile.name}`);
+      console.log(`✅ Perfil guardado: ${profile.name}`);
 
       // Remover pantalla de setup
       const screen = document.getElementById('setup-screen');

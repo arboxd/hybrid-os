@@ -230,7 +230,7 @@ function createWorkoutCard(workout, index) {
   // Fecha
   const date = document.createElement('p');
   date.className = 'workout-date';
-  date.textContent = workout.date ? `Fecha: \${new Date(workout.date).toLocaleDateString()}` : 'Fecha: No especificada';
+  date.textContent = workout.date ? `Fecha: ${new Date(workout.date).toLocaleDateString()}` : 'Fecha: No especificada';
 
   // Ejercicios
   const exercises = document.createElement('p');

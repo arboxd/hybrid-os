@@ -341,160 +341,74 @@ button {
   gap: 18px;
 }
 
-.day-selector {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.day-btn {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.25s;
-  font-family: inherit;
-}
-
-.day-btn:hover {
-  background: var(--surface2);
-}
-
-.day-btn.active {
-  background: var(--primary);
-  color: #00131d;
+.training-day-title {
+  font-size: 1.5rem;
   font-weight: 600;
-  border-color: var(--primary);
+  color: var(--text);
 }
 
-.workout-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 20px;
-  box-shadow: var(--shadow);
+.exercise-list {
+  list-style-type: none;
+  padding: 0;
 }
 
-.workout-info h2 {
-  font-size: 1.2rem;
-}
-
-.progress-bar-wrap {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 20px;
-  box-shadow: var(--shadow);
-}
-
-.progress-bar-container {
+.exercise-item {
   background: var(--surface2);
-  border-radius: 8px;
-  height: 10px;
-  overflow: hidden;
-  margin-bottom: 8px;
-}
-
-.progress-bar {
-  background: var(--success);
-  height: 100%;
-  transition: width 0.4s ease;
-}
-
-.progress-text {
-  font-size: 0.8rem;
-  color: var(--muted);
-  text-align: right;
-  display: block;
-}
-
-.exercises-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.exercise-card {
-  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 12px;
+  margin: 8px 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  box-shadow: var(--shadow);
-  transition: border-color 0.25s;
-}
-
-.exercise-card:hover {
-  border-color: var(--primary);
-}
-
-.exercise-info {
-  display: flex;
-  gap: 12px;
   align-items: center;
 }
 
-.exercise-number {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--primary);
-  min-width: 28px;
-}
-
-.exercise-details {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.exercise-checkbox {
+  margin-right: 10px;
 }
 
 .exercise-name {
+  flex-grow: 1;
   font-weight: 600;
 }
 
-.exercise-meta {
-  font-size: 0.85rem;
-  color: var(--muted);
+.exercise-reps,
+.exercise-weight {
+  width: 60px;
+  margin-left: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px;
+  background: var(--surface);
+  color: var(--text);
 }
 
-.complete-btn {
-  background: transparent;
-  border: 2px solid var(--border);
-  color: var(--muted);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: 0.25s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.complete-btn:hover {
-  border-color: var(--success);
-  color: var(--success);
-}
-
-.complete-btn.done {
-  background: var(--success);
-  border-color: var(--success);
+.exercise-delete {
+  margin-left: 10px;
+  background: var(--danger);
   color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background 0.25s;
 }
 
-.training-actions {
-  display: flex;
-  gap: 12px;
+.exercise-delete:hover {
+  background: #ef4444; /* Color más oscuro en hover */
+}
+
+.reset-btn {
+  background: var(--warning);
+  color: var(--text);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+.reset-btn:hover {
+  background: #facc15; /* Color más oscuro en hover */
 }
 
 /* ========================================= */
@@ -898,6 +812,10 @@ button {
 .summary-label {
   display: block;
   font-size: 0.7rem;
+  color
+.summary-label {
+  display: block;
+  font-size: 0.7rem;
   color: var(--muted);
   margin-bottom: 0.2rem;
 }
@@ -1012,7 +930,7 @@ button {
   padding: 0.6rem 0.75rem;
   background: var(--surface2);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   color: var(--text);
   font-size: 0.9rem;
   font-family: inherit;
@@ -1124,4 +1042,69 @@ button {
   .day-btn {
     white-space: nowrap;
   }
+}
+
+.day-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.day-btn i {
+  font-size: 1.2rem; /* Tamaño del ícono */
+}
+
+.day-btn:hover {
+  background: var(--surface2);
+}
+
+.exercise-item.completed {
+  background: var(--success); /* Color de fondo si está completado */
+  color: white;
+}
+.exercise-delete {
+  margin-left: 10px;
+  background: var(--danger);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+.exercise-delete:hover {
+  background: #ef4444; /* Color más oscuro en hover */
+}
+
+.workout {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.complete-btn {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.complete-btn:hover {
+    background-color: #45a049; /* Verde más oscuro */
+}
+
+.workout li {
+    margin: 5px 0;
 }

@@ -188,18 +188,18 @@ function createTrendsSection() {
     },
     {
       text: statsData.streakDays >= 7
-        ? `¡Increíble! Racha de \${statsData.streakDays} días`
+        ? `¡Increíble! Racha de ${statsData.streakDays} días`
         : statsData.streakDays >= 3
-          ? `Racha de \${statsData.streakDays} días, sigue así`
-          : `Racha de \${statsData.streakDays} días, intenta mejorar`,
+          ? `Racha de ${statsData.streakDays} días, sigue así`
+          : `Racha de ${statsData.streakDays} días, intenta mejorar`,
       icon: statsData.streakDays >= 7 ? '🔥' : statsData.streakDays >= 3 ? '⭐' : '🎯'
     },
     {
       text: statsData.averageDuration >= 60
-        ? `Entrenamientos intensos: \${statsData.averageDuration} min avg`
+        ? `Entrenamientos intensos: ${statsData.averageDuration} min avg`
         : statsData.averageDuration >= 30
-          ? `Entrenamientos moderados: \${statsData.averageDuration} min avg`
-          : `Entrenamientos cortos: \${statsData.averageDuration} min avg`,
+          ? `Entrenamientos moderados: ${statsData.averageDuration} min avg`
+          : `Entrenamientos cortos: ${statsData.averageDuration} min avg`,
       icon: statsData.averageDuration >= 60 ? '⚡' : statsData.averageDuration >= 30 ? '⚖️' : '🕐'
     }
   ];

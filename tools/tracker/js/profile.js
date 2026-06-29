@@ -223,6 +223,10 @@ export function loadProfileData() {
   if (stored) {
     try {
       userProfile = JSON.parse(stored);
+      // Asegúrate de que goals sea un arreglo
+      if (!userProfile.goals || !Array.isArray(userProfile.goals)) {
+        userProfile.goals = []; // Inicializa como un arreglo vacío
+      }
     } catch (error) {
       console.error('Error al cargar datos del perfil:', error);
       userProfile = {
